@@ -8,7 +8,7 @@ const user = require('./routes/user')
 const cron = require('cron')
 const https = require('https')
 
-const backendUrl = "https://capysocial.onrender.com/"
+const backendUrl = "https://capytvserver.onrender.com/"
 const job = new cron.CronJob("*/14 * * * *", ()=>{
     console.log("restarting server")
     https.get(backendUrl,(res:any)=>{
