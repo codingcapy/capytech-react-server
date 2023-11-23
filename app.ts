@@ -1,4 +1,11 @@
 
+/*
+author: Paul Kim
+date: November 23, 2023
+version: 1.0
+description: web server script for CapyTV
+ */
+
 import express from "express"
 import cors from "cors"
 import connectDB from "./connect"
@@ -8,17 +15,18 @@ const user = require('./routes/user')
 const videos = require('./routes/videos')
 const comments = require('./routes/comments')
 const likes = require('./routes/likes')
+const commentLikes = require('./routes/commentlikes')
 const cron = require('cron')
 const https = require('https')
 
 const backendUrl = "https://capytvserver.onrender.com/"
-const job = new cron.CronJob("*/14 * * * *", ()=>{
+const job = new cron.CronJob("*/14 * * * *", () => {
     console.log("restarting server")
-    https.get(backendUrl,(res:any)=>{
-        if (res.statusCode === 200){
+    https.get(backendUrl, (res: any) => {
+        if (res.statusCode === 200) {
             console.log('Server restarted')
         }
-        else{
+        else {
             console.log('failed to restart')
         }
     })
@@ -41,14 +49,15 @@ app.use('/api/users', users)
 app.use("/api/videos", videos)
 app.use('/api/comments', comments)
 app.use('/api/likes', likes)
+app.use('/api/commentlikes', commentLikes)
 
-async function start(){
-    try{
+async function start() {
+    try {
         await connectDB(process.env.MONGO_URI)
         console.log("Connected to database")
         app.listen(port, () => console.log(`Server listening on port: ${port}`))
     }
-    catch(err){
+    catch (err) {
         console.log(err)
     }
 }

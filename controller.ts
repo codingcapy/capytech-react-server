@@ -138,3 +138,22 @@ export async function updateLike(req: Request, res: Response) {
     );
     res.status(200).json({ success: true });
 }
+
+export async function createCommentLike(req: Request, res: Response) {
+    const commentLikes = await CommentLike.find({})
+    const commentLikeId = commentLikes.length === 0 ? 1 : commentLikes[commentLikes.length - 1].commentLikeId + 1
+    const incomingLike = req.body
+    const commentLike = await CommentLike.create({ ...incomingLike, commentLikeId: commentLikeId })
+    res.status(200).json({ success: true })
+}
+
+export async function updateCommentLike(req: Request, res: Response) {
+    const commentLikeId = parseInt(req.params.commentLikeId)
+    const incomingCommentLike = req.body;
+    const updatedCommentLike = await CommentLike.findOneAndUpdate(
+        { commentLikeId: commentLikeId },
+        incomingCommentLike,
+        { new: true }
+    );
+    res.status(200).json({ success: true });
+}
