@@ -84,6 +84,7 @@ export async function getVideos(req: Request, res: Response) {
 export async function getVideo(req: Request, res: Response) {
     const videoId = req.params.videoId;
     const video = await Video.findOne({ videoId: parseInt(videoId) })
+    const videos = await Video.find({})
     const comments = await Comment.find({ videoId: parseInt(videoId) })
     const replies = await Reply.find({ videoId: parseInt(videoId) })
     const likes = await Like.find({ videoId: parseInt(videoId) })
@@ -96,6 +97,6 @@ export async function getVideo(req: Request, res: Response) {
         res.status(404).json({ error: "Video not found" })
     }
     else {
-        res.json({ video: video, comments: commentsDisplay, replies: repliesDisplay, likes: likes, commentLikes: commentLikes, replyLikes: replyLikes })
+        res.json({ video: video, comments: commentsDisplay, replies: repliesDisplay, likes: likes, commentLikes: commentLikes, replyLikes: replyLikes, videos:videos })
     }
 }
