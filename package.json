@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "tsc":"tsc",
     "start": "nodemon app.ts",
-    "install-server": "npm install",
+    "install-server": "npm install && npm run tsc",
     "start-server": "node build/app.js"
   },
   "author": "",
