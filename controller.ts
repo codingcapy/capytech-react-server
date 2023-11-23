@@ -109,6 +109,17 @@ export async function createComment(req: Request, res: Response) {
     res.status(200).json({ success: true })
 }
 
+export async function updateComment(req: Request, res: Response) {
+    const commentId = parseInt(req.params.commentId)
+    const incomingComment = req.body;
+    const updatedComment = await Comment.findOneAndUpdate(
+        { commentId: commentId },
+        incomingComment,
+        { new: true }
+    );
+    res.status(200).json({ success: true });
+}
+
 export async function createLike(req: Request, res: Response) {
     const likes = await Like.find({})
     const likeId = likes.length === 0 ? 1 : likes[likes.length - 1].likeId + 1
