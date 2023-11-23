@@ -3,6 +3,12 @@ import { Request, Response } from "express"
 import jwt from "jsonwebtoken"
 
 const User = require('./models/User')
+const Video = require('./models/Video')
+const Comment = require('./models/Comment')
+const Reply = require('./models/Reply')
+const Like = require('./models/Like')
+const CommentLike = require('./models/CommentLike')
+const ReplyLike = require('./models/ReplyLike')
 const bcrypt = require('bcrypt');
 
 const saltRounds = 6;
@@ -62,5 +68,34 @@ export async function createUser(req: Request, res: Response) {
         const encrypted = await bcrypt.hash(password, saltRounds)
         const user = await User.create({ username: username, password: password, userId: userId })
         res.status(200).json({ success: true, message: "Sign up successful!" })
+    }
+}
+
+export async function getVideos(req: Request, res: Response) {
+    try {
+        const videos = await Video.find({})
+        res.json(videos)
+    }
+    catch (err) {
+        res.status(500).json({ msg: err })
+    }
+}
+
+export async function getVideo(req: Request, res: Response) {
+    const videoId = req.params.videoId;
+    const video = await Video.findOne({ videoId: parseInt(videoId) })
+    const comments = await Comment.find({ videoId: parseInt(videoId) })
+    const replies = await Reply.find({ videoId: parseInt(videoId) })
+    const likes = await Like.find({ videoId: parseInt(videoId) })
+    const commentLikes = await CommentLike.find({ videoId: parseInt(videoId) })
+    const replyLikes = await ReplyLike.find({ videoId: parseInt(videoId) })
+    const users = await User.find({})
+    const commentsDisplay = comments.map((comment: any) => ({ ...comment, userName: users.find((user: any) => user.userId === comment.userId).username }));
+    const repliesDisplay = replies.map((reply: any) => ({ ...reply, userName: users.find((user: any) => user.userId === reply.userId).username }));
+    if (!video) {
+        res.status(404).json({ error: "Video not found" })
+    }
+    else {
+        res.json({ video: video, comments: commentsDisplay, replies: repliesDisplay, likes: likes, commentLikes: commentLikes, replyLikes: replyLikes })
     }
 }
