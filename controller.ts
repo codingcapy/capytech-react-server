@@ -108,3 +108,22 @@ export async function createComment(req: Request, res: Response) {
     const comment = await Comment.create({ ...incomingComment, commentId: commentId })
     res.status(200).json({ success: true })
 }
+
+export async function createLike(req: Request, res: Response) {
+    const likes = await Like.find({})
+    const likeId = likes.length === 0 ? 1 : likes[likes.length - 1].likeId + 1
+    const incomingLike = req.body
+    const like = await Like.create({ ...incomingLike, likeId: likeId })
+    res.status(200).json({ success: true })
+}
+
+export async function updateLike(req: Request, res: Response) {
+    const likeId = parseInt(req.params.likeId)
+    const incomingLike = req.body;
+    const updatedLike = await Like.findOneAndUpdate(
+        { likeId: likeId },
+        incomingLike,
+        { new: true }
+    );
+    res.status(200).json({ success: true });
+}

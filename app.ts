@@ -7,6 +7,7 @@ const users = require('./routes/users')
 const user = require('./routes/user')
 const videos = require('./routes/videos')
 const comments = require('./routes/comments')
+const likes = require('./routes/likes')
 const cron = require('cron')
 const https = require('https')
 
@@ -39,6 +40,7 @@ app.use('/api/user', user)
 app.use('/api/users', users)
 app.use("/api/videos", videos)
 app.use('/api/comments', comments)
+app.use('/api/likes', likes)
 
 async function start(){
     try{
