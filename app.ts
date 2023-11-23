@@ -6,6 +6,7 @@ require('dotenv').config()
 const users = require('./routes/users')
 const user = require('./routes/user')
 const videos = require('./routes/videos')
+const comments = require('./routes/comments')
 const cron = require('cron')
 const https = require('https')
 
@@ -37,6 +38,7 @@ app.get("/", (req, res) => {
 app.use('/api/user', user)
 app.use('/api/users', users)
 app.use("/api/videos", videos)
+app.use('/api/comments', comments)
 
 async function start(){
     try{

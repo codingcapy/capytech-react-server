@@ -100,3 +100,11 @@ export async function getVideo(req: Request, res: Response) {
         res.json({ video: video, comments: commentsDisplay, replies: repliesDisplay, likes: likes, commentLikes: commentLikes, replyLikes: replyLikes, videos:videos })
     }
 }
+
+export async function createComment(req: Request, res: Response) {
+    const comments = await Comment.find({})
+    const commentId = comments.length === 0 ? 1 : comments[comments.length - 1].commentId + 1;
+    const incomingComment = req.body
+    const comment = await Comment.create({ ...incomingComment, commentId: commentId })
+    res.status(200).json({ success: true })
+}
