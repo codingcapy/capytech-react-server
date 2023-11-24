@@ -59,6 +59,13 @@ export async function searchUserById(userId: number) {
     return user;
 }
 
+export async function getUser(req: Request, res: Response) {
+    const userId = req.params.userId;
+    const userComments = await Comment.find({ userId: parseInt(userId) })
+    const userReplies = await Reply.find({ userId: parseInt(userId) })
+    res.json({ comments: userComments, replies: userReplies })
+}
+
 export async function createUser(req: Request, res: Response) {
     const users = await User.find({})
     const userId = users.length === 0 ? 1 : users[users.length - 1].userId + 1;
