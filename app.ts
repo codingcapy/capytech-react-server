@@ -17,6 +17,7 @@ const comments = require('./routes/comments')
 const replies = require('./routes/replies')
 const likes = require('./routes/likes')
 const commentLikes = require('./routes/commentlikes')
+const replyLikes = require('./routes/replylikes')
 const cron = require('cron')
 const https = require('https')
 
@@ -52,6 +53,7 @@ app.use('/api/comments', comments)
 app.use('/api/replies', replies)
 app.use('/api/likes', likes)
 app.use('/api/commentlikes', commentLikes)
+app.use('/api/replylikes', replyLikes)
 
 async function start() {
     try {

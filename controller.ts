@@ -176,3 +176,22 @@ export async function updateReply(req: Request, res: Response) {
     );
     res.status(200).json({ success: true });
 }
+
+export async function createReplyLike(req: Request, res: Response) {
+    const replyLikes = await ReplyLike.find({})
+    const replyLikeId = replyLikes.length === 0 ? 1 : replyLikes[replyLikes.length - 1].replyLikeId + 1
+    const incomingLike = req.body
+    const replyLike = await ReplyLike.create({ ...incomingLike, replyLikeId: replyLikeId })
+    res.status(200).json({ success: true })
+}
+
+export async function updateReplyLike(req: Request, res: Response) {
+    const replyLikeId = parseInt(req.params.replyLikeId)
+    const incomingReplyLike = req.body;
+    const updatedReplyLike = await ReplyLike.findOneAndUpdate(
+        { replyLikeId: replyLikeId },
+        incomingReplyLike,
+        { new: true }
+    );
+    res.status(200).json({ success: true });
+}
