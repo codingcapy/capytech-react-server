@@ -157,3 +157,22 @@ export async function updateCommentLike(req: Request, res: Response) {
     );
     res.status(200).json({ success: true });
 }
+
+export async function createReply(req: Request, res: Response) {
+    const replies = await Reply.find({})
+    const replyId = replies.length === 0 ? 1 : replies[replies.length - 1].replyId + 1;
+    const incomingReply = req.body
+    const reply = await Reply.create({ ...incomingReply, replyId: replyId })
+    res.status(200).json({ success: true })
+}
+
+export async function updateReply(req: Request, res: Response) {
+    const replyId = parseInt(req.params.replyId)
+    const incomingReply = req.body;
+    const updatedReply = await Reply.findOneAndUpdate(
+        { replyId: replyId },
+        incomingReply,
+        { new: true }
+    );
+    res.status(200).json({ success: true });
+}
