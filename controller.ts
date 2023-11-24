@@ -1,4 +1,11 @@
 
+/*
+author: Paul Kim
+date: November 23, 2023
+version: 1.0
+description: controller for CapyTV
+ */
+
 import { Request, Response } from "express"
 import jwt from "jsonwebtoken"
 
@@ -97,7 +104,7 @@ export async function getVideo(req: Request, res: Response) {
         res.status(404).json({ error: "Video not found" })
     }
     else {
-        res.json({ video: video, comments: commentsDisplay, replies: repliesDisplay, likes: likes, commentLikes: commentLikes, replyLikes: replyLikes, videos:videos })
+        res.json({ video: video, comments: commentsDisplay, replies: repliesDisplay, likes: likes, commentLikes: commentLikes, replyLikes: replyLikes, videos: videos })
     }
 }
 

@@ -1,4 +1,11 @@
 
+/*
+author: Paul Kim
+date: November 23, 2023
+version: 1.0
+description: reply model schema for CapyTV
+ */
+
 import mongoose from "mongoose"
 
 const ReplySchema = new mongoose.Schema({

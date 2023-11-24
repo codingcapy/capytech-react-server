@@ -1,10 +1,9 @@
 
-
 /*
 author: Paul Kim
 date: November 13, 2023
 version: 1.0
-description: posts router for CapySocial
+description: videos router for CapyTV
  */
 
 import express from "express"
