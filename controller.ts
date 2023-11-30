@@ -28,11 +28,18 @@ export async function validateUser(req: Request, res: Response) {
     const users = await User.find({})
     const { username, password } = req.body
     const user = users.find((user: any) => {
-        return user.username === username && user.password === password;
+        return user.username === username;
     })
     if (!user) return res.json({ result: { user: null, token: null } });;
-    const token = jwt.sign({ id: user.userId }, "secret", { expiresIn: "2days" });
-    res.json({ result: { user, token } });
+    bcrypt.compare(password, user.password, function (err: any, result: boolean) {
+        if (result === true) {
+            const token = jwt.sign({ id: user.userId }, "secret", { expiresIn: "2days" });
+            res.json({ result: { user, token } });
+        }
+        else {
+            return res.json({ result: { user: null, token: null } });
+        }
+    })
 }
 
 export async function decryptToken(req: Request, res: Response) {
