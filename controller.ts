@@ -71,18 +71,28 @@ export async function createUser(req: Request, res: Response) {
     const userId = users.length === 0 ? 1 : users[users.length - 1].userId + 1;
     const username = req.body.username;
     const password = req.body.password;
-    console.log(username)
-    console.log(password)
-    console.log(users.find((user: any) => user.username === username.toString()))
     if (users.find((user: any) => user.username === username.toString())) {
         res.json({ success: false, message: "Username already exists" })
     }
     else {
-        console.log(users.find((user: any) => user.username === username.toString()))
         const encrypted = await bcrypt.hash(password, saltRounds)
-        const user = await User.create({ username: username, password: password, userId: userId })
+        const user = await User.create({ username: username, password: encrypted, userId: userId })
         res.status(200).json({ success: true, message: "Sign up successful!" })
     }
+}
+
+export async function updateUser(req: Request, res: Response) {
+    const userId = parseInt(req.params.userId)
+    const incomingUser = await req.body;
+    const incomingPassword = incomingUser.password
+    const encrypted = await bcrypt.hash(incomingPassword, saltRounds)
+    const updatedUser = await User.findOneAndUpdate(
+        { userId: userId },
+        { username: incomingUser.username, password: encrypted, userId: incomingUser.userId },
+        { new: true }
+    );
+    res.status(200).json({ success: true });
+
 }
 
 export async function getVideos(req: Request, res: Response) {
